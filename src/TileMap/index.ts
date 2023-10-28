@@ -12,8 +12,8 @@ export default class TileSize {
   pinkDot: HTMLImageElement
   wall: HTMLImageElement
   powerDot: HTMLImageElement
-  powerDotAnmationDefaultTime: number = 30
-  powerDotAnmationTimer: number
+  powerDotAnimationDefaultTime: number = 30
+  powerDotAnimationTimer: number
 
   map: number[][] = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -42,7 +42,7 @@ export default class TileSize {
     this.wall.src = wallIcon
 
     this.powerDot = this.pinkDot
-    this.powerDotAnmationTimer = this.powerDotAnmationDefaultTime
+    this.powerDotAnimationTimer = this.powerDotAnimationDefaultTime
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -88,9 +88,9 @@ export default class TileSize {
   }
 
   drawPowerDot(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
-    this.powerDotAnmationTimer--
-    if (this.powerDotAnmationTimer === 0) {
-      this.powerDotAnmationTimer = this.powerDotAnmationDefaultTime
+    this.powerDotAnimationTimer--
+    if (this.powerDotAnimationTimer === 0) {
+      this.powerDotAnimationTimer = this.powerDotAnimationDefaultTime
       this.powerDot = this.powerDot === this.pinkDot ? this.yellowDot : this.pinkDot
     }
     ctx.drawImage(
