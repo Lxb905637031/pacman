@@ -8,6 +8,7 @@ import {
 } from '../typings/type'
 
 import Pacman from '../Pacman'
+import Enemy from '../Enemy'
 
 export default class TileSize {
   tileSize: number
@@ -125,6 +126,28 @@ export default class TileSize {
         }
       }
     }
+  }
+
+  getEnemy(velocity: number) {
+    const enemies = []
+    for (let row = 0; row < this.map.length; row++) {
+      for (let column = 0; column < this.map[row].length; column++) {
+        const tile = this.map[row][column]
+        if (tile === map.enemy) {
+          enemies.push(
+            new Enemy(
+              column * this.tileSize,
+              row * this.tileSize,
+              this.tileSize,
+              velocity,
+              this
+            )
+          )
+        }
+      }
+    }
+
+    return enemies
   }
 
   // 碰撞检测

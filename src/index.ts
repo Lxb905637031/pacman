@@ -16,11 +16,13 @@ let gameWin: boolean = false
 
 const tileMap = new TileSize(tileSize)
 const pacman = tileMap.getPacman(velocity)
+const enemies = tileMap.getEnemy(velocity)
 
 function gameLoop() {
   tileMap.init(canvas)
   tileMap.draw(ctx)
   pacman!.draw(ctx)
+  enemies.forEach(enemy => enemy.draw(ctx))
   requestAnimationFrame(gameLoop)
 }
 
