@@ -4,6 +4,7 @@ import {
 } from '../typings/type'
 
 import TileMap from '../TileMap'
+import Enemy from '../Enemy'
 
 import wakaVoice from '../asset/sounds/waka.wav'
 import powerDotVoice from '../asset/sounds/power_dot.wav'
@@ -91,13 +92,16 @@ export default class Pacman {
     this.eventBind()
   }
 
-  draw(ctx: CanvasRenderingContext2D) {
-    this.animation()
-    this.move()
+  draw(ctx: CanvasRenderingContext2D, isPause: boolean, enemies: Enemy[]) {
 
+    if (!isPause) {
+      this.animation()
+      this.move()
+    }
 
     this.eatDot()
     this.eatPowerDot()
+    this.eatGhost(enemies)
 
     const size = this.tileSize / 2
 
@@ -242,6 +246,16 @@ export default class Pacman {
       }, 1000 * 3)
 
       this.timers.push(powerDotAboutToExpireTimer)
+    }
+  }
+
+  eatGhost(enemies: Enemy[]) {
+    if (this.powerDotActive) {
+      const collideEnemies = enemies.filter((enemy) => enemy.collideWith(this))
+      collideEnemies.forEach((enemy) => {
+        enemies.splice(enemies.indexOf(enemy), 1)
+        this.eatGhostSound.play()
+      })
     }
   }
 }

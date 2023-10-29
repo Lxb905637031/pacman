@@ -219,4 +219,8 @@ export default class TileSize {
 
     return false
   }
+
+  didWin() {
+    return this.map.flat().filter(tile => tile === 0).length === 0
+  }
 }
