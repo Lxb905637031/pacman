@@ -3,8 +3,11 @@ import pinkDotIcon from '../asset/images/pinkDot.png'
 import wallIcon from '../asset/images/wall.png'
 
 import { 
-  map
+  map, 
+  moveDirection
 } from '../typings/type'
+
+import Pacman from '../Pacman'
 
 export default class TileSize {
   tileSize: number
@@ -48,12 +51,12 @@ export default class TileSize {
   draw(ctx: CanvasRenderingContext2D) {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
-        let title = this.map[row][column]
-        if (title === map.wall) {
+        let tile = this.map[row][column]
+        if (tile === map.wall) {
           this.drawWall(ctx, column, row, this.tileSize)
-        } else if (title === map.dots) {
+        } else if (tile === map.dots) {
           this.drawDot(ctx, column, row, this.tileSize)
-        } else if (title === map.powerDot) {
+        } else if (tile === map.powerDot) {
           this.drawPowerDot(ctx, column, row, this.tileSize)
         }else {
           this.drawBlank(ctx, column, row, this.tileSize)
@@ -105,5 +108,92 @@ export default class TileSize {
   drawBlank(ctx: CanvasRenderingContext2D, column: number, row: number, size: number) {
     ctx.fillStyle = 'black'
     ctx.fillRect(column * size, row * size, size, size)
+  }
+
+  getPacman(velocity: number) {
+    for (let row = 0; row < this.map.length; row++) {
+      for (let column = 0; column < this.map[row].length; column++) {
+        const tile = this.map[row][column]
+        if (tile === map.pacman) {
+          return new Pacman(
+            column * this.tileSize, 
+            row * this.tileSize, 
+            this.tileSize, 
+            velocity, 
+            this
+          )
+        }
+      }
+    }
+  }
+
+  // 碰撞检测
+  didCollideWithEnvironment(x: number, y: number, direction: moveDirection) {
+    if (direction === null) return
+
+    if (
+      Number.isInteger(x / this.tileSize) &&
+      Number.isInteger(y / this.tileSize)
+    ) {
+      let row = 0
+      let column = 0
+      let nextRow = 0
+      let nextColumn = 0
+
+      switch(direction) {
+        case moveDirection.up:
+          nextRow = y - this.tileSize
+          row = nextRow / this.tileSize
+          column = x / this.tileSize
+          break
+        case moveDirection.down:
+          nextRow = y + this.tileSize
+          row = nextRow / this.tileSize
+          column = x / this.tileSize
+          break
+        case moveDirection.left:
+          nextColumn = x - this.tileSize
+          column = nextColumn / this.tileSize
+          row = y / this.tileSize
+          break
+        case moveDirection.right:
+          nextColumn = x + this.tileSize
+          column = nextColumn / this.tileSize
+          row = y / this.tileSize
+          break
+      }
+      const tile = this.map[row][column]
+
+      if (tile === 1) {
+        return true
+      }
+      return false
+    }
+  }
+
+  eatDot(x: number, y: number) {
+    const row = y / this.tileSize
+    const column = x / this.tileSize
+    if (Number.isInteger(row) && Number.isInteger(column)) {
+      if (this.map[row][column] === map.dots) {
+        this.map[row][column] = map.emptySpace
+        return true
+      }
+    }
+
+    return false
+  }
+
+  eatPowerDot(x: number, y: number) {
+    const row = y / this.tileSize
+    const column = x / this.tileSize
+    if (Number.isInteger(row) && Number.isInteger(column)) {
+      if (this.map[row][column] === map.powerDot) {
+        this.map[row][column] = map.emptySpace
+        return true
+      }
+    }
+
+    return false
   }
 }

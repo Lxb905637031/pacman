@@ -1,6 +1,7 @@
 import './index.css'
 
 import TileSize from './TileMap'
+import Pacman from './Pacman'
 
 // 瓦片宽度
 const tileSize: number = 32
@@ -14,14 +15,13 @@ let gameOver: boolean = false
 let gameWin: boolean = false
 
 const tileMap = new TileSize(tileSize)
+const pacman = tileMap.getPacman(velocity)
 
 function gameLoop() {
   tileMap.init(canvas)
   tileMap.draw(ctx)
-
+  pacman!.draw(ctx)
   requestAnimationFrame(gameLoop)
 }
 
 gameLoop()
-
-
