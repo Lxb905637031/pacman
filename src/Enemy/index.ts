@@ -1,6 +1,6 @@
 import { 
   moveDirection,
-} from '../typings/type'
+} from '../types/type'
 
 import TileMap from '../TileMap'
 import Pacman from '../Pacman'

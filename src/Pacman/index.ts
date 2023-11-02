@@ -1,7 +1,7 @@
 import { 
   moveDirection,
   moveAngle
-} from '../typings/type'
+} from '../types/type'
 
 import TileMap from '../TileMap'
 import Enemy from '../Enemy'

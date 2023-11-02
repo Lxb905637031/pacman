@@ -5,7 +5,7 @@ import wallIcon from '../asset/images/wall.png'
 import { 
   map, 
   moveDirection
-} from '../typings/type'
+} from '../types/type'
 
 import Pacman from '../Pacman'
 import Enemy from '../Enemy'
