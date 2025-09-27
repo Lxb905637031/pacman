@@ -15,6 +15,5 @@ export default {
   build: {
     outDir: 'dist',
     sourcemap: false, // 生产环境建议关闭 sourcemap 以减小体积
-    minify: 'terser', // 启用代码压缩
   }
 }
